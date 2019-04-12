@@ -8,12 +8,9 @@ import {
 } from "react-native";
 
 import styles from './styles';
+import sizes from '../sizes';
 
 IMAGE_URI = 'https://www.morpht.com/sites/morpht/files/styles/landscape/public/dalibor-matura_1.jpg?itok=gxCAhwAV'
-HEADER_MAX_HEIGHT = 70;
-HEADER_MIN_HEIGHT = 30;
-PROFILE_IMG_MAX_HEIGHT = 80;
-PROFILE_IMG_MIN_HEIGHT = 40;
 
 
 class Favorites extends Component {
@@ -30,27 +27,66 @@ class Favorites extends Component {
   render() {
 
     const headerHeight = this.state.scrollY.interpolate({
-      inputRange: [0,HEADER_MAX_HEIGHT-HEADER_MIN_HEIGHT],
-      outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+      inputRange: [0,sizes.HEADER_MAX_HEIGHT-sizes.HEADER_MIN_HEIGHT],
+      outputRange: [sizes.HEADER_MAX_HEIGHT, sizes.HEADER_MIN_HEIGHT],
       extrapolate: 'clamp'  
-    })
+    });
     
+    const imageHeight = this.state.scrollY.interpolate({
+      inputRange: [0,sizes.HEADER_MAX_HEIGHT-sizes.HEADER_MIN_HEIGHT],
+      outputRange: [sizes.PROFILE_IMG_MAX_HEIGHT, sizes.PROFILE_IMG_MIN_HEIGHT],
+      extrapolate: 'clamp'  
+    });
+
+    const imageWidth = this.state.scrollY.interpolate({
+      inputRange: [0,sizes.HEADER_MAX_HEIGHT-sizes.HEADER_MIN_HEIGHT],
+      outputRange: [sizes.PROFILE_IMG_MAX_HEIGHT, sizes.PROFILE_IMG_MIN_HEIGHT],
+      extrapolate: 'clamp'  
+    });
+
+    const profileImageMarginTop = this.state.scrollY.interpolate({
+      inputRange: [0,sizes.HEADER_MAX_HEIGHT-sizes.HEADER_MIN_HEIGHT],
+      outputRange: [sizes.HEADER_MAX_HEIGHT - (sizes.PROFILE_IMG_MAX_HEIGHT/2), sizes.HEADER_MAX_HEIGHT+5],
+      extrapolate: 'clamp'  
+    });
+
+    const imageZIndex = this.state.scrollY.interpolate({
+      inputRange: [0,sizes.HEADER_MAX_HEIGHT-sizes.HEADER_MIN_HEIGHT],
+      outputRange: [0,1],
+      extrapolate: 'clamp'  
+    });
+
+    const profileNameLittle = this.state.scrollY.interpolate({
+      inputRange: [0,sizes.HEADER_MAX_HEIGHT-sizes.HEADER_MIN_HEIGHT,
+        (sizes.HEADER_MAX_HEIGHT-sizes.HEADER_MIN_HEIGHT) + sizes.PROFILE_IMG_MIN_HEIGHT + 5,
+        (sizes.HEADER_MAX_HEIGHT-sizes.HEADER_MIN_HEIGHT) + sizes.PROFILE_IMG_MIN_HEIGHT+26],
+      outputRange: [-20, -20, -20, 0],
+      extrapolate: 'clamp'  
+    });
 
     return(
       <View style={styles.container}>
-        <Animated.View style={[styles.headerContainer, { height: headerHeight }]}>
-          
+        <Animated.View style={[styles.headerContainer, { height: headerHeight, zIndex: imageZIndex }]}>
+          <Animated.View style={[styles.profileNameLittleContainer, {bottom: profileNameLittle,}]}>
+            <Text style={styles.profileNameLittle}>
+              Pedro Neto
+            </Text>
+          </Animated.View>
         </Animated.View>
 
         <ScrollView 
           style={styles.scrollContainer}
+          scrollEventThrottle={16}
           onScroll= {Animated.event(
             [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
           )}
         >
-          <View style= {styles.imageContainer}>
+          <Animated.View 
+            style= {[styles.imageContainer, {height: imageHeight, 
+                    width: imageWidth, marginTop: profileImageMarginTop}]}
+          >
             <Image style={styles.image} source={{ uri: IMAGE_URI }}/>
-          </View>
+          </Animated.View>
 
           <View style={styles.profileNameContainer}>
             <Text style= {styles.profileName}>

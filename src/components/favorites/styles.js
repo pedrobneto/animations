@@ -1,9 +1,5 @@
 import { StyleSheet } from 'react-native';
-
-HEADER_MAX_HEIGHT = 120;
-HEADER_MAX_HEIGHT = 70;
-PROFILE_IMG_MAX_HEIGHT = 80;
-PROFILE_IMG_MIN_HEIGHT = 40;
+import sizes from '../sizes';
 
 const styles = StyleSheet.create({
 
@@ -17,7 +13,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: 'lightskyblue',
-    height: HEADER_MAX_HEIGHT,
+    alignItems: 'center',
   },
 
   scrollContainer: {
@@ -25,13 +21,13 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    height: PROFILE_IMG_MAX_HEIGHT,
-    width: PROFILE_IMG_MAX_HEIGHT,
-    borderRadius: PROFILE_IMG_MAX_HEIGHT/2,
+    height: sizes.PROFILE_IMG_MAX_HEIGHT,
+    width: sizes.PROFILE_IMG_MAX_HEIGHT,
+    borderRadius: sizes.PROFILE_IMG_MAX_HEIGHT/2,
     borderColor: 'white',
     borderWidth: 3,
     overflow: 'hidden',
-    marginTop: HEADER_MAX_HEIGHT - (PROFILE_IMG_MAX_HEIGHT/2),
+    marginTop: sizes.HEADER_MAX_HEIGHT - (sizes.PROFILE_IMG_MAX_HEIGHT/2),
     marginLeft: 10,
   },
 
@@ -48,6 +44,17 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'black',
+  },
+
+  profileNameLittleContainer: {
+    position: 'absolute',
+  },
+
+  profileNameLittle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'white',
   },
 
   mockView: {
